@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ali Baba Marketing Pro | Mobile Responsive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { 
+            --body-bg: #0c1020;
+            --glass-bg: rgba(18, 23, 45, 0.95);
+            --primary: #00d2ff;
+            --text-color: #ffffff;
+        }
+        
+        body { 
+            margin: 0; padding: 0; background: var(--body-bg); 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            color: var(--text-color); 
+            display: flex; justify-content: center; min-height: 100vh;
+            transition: background 0.5s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-card { 
+            background: var(--glass-bg); backdrop-filter: blur(20px); 
+            border: 2px solid rgba(255,255,255,0.1); 
+            border-radius: 25px; padding: 20px; 
+            width: 92%; max-width: 420px; 
+            margin: 20px auto; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+            transition: border-color 0.5s ease;
+            box-sizing: border-box;
+        }
+
+        .header { text-align: center; margin-bottom: 20px; }
+        .rocket-logo {
+            font-size: 45px; color: var(--primary); margin-bottom: 8px;
+            filter: drop-shadow(0 0 8px var(--primary));
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        
+        h2 { margin: 0; font-size: 22px; font-weight: 800; }
+        .trust-tag { font-size: 10px; opacity: 0.8; color: var(--primary); font-weight: bold; text-transform: uppercase; }
+
+        .section-title { font-size: 13px; margin: 15px 0 10px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        
+        .input-wrapper { position: relative; width: 100%; }
+        .input-wrapper i { position: absolute; left: 15px; top: 14px; color: var(--primary); font-size: 16px; z-index: 2; }
+
+        select, input { 
+            width: 100%; padding: 14px 15px 14px 42px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
+            background: #161b33; color: #fff; font-size: 15px; margin-bottom: 12px; outline: none; box-sizing: border-box;
+            appearance: none;
+        }
+
+        /* Responsive Grid for Quantities */
+        .tabs-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 8px; 
+            margin-bottom: 15px; 
+        }
+        .tab-btn { 
+            background: rgba(255,255,255,0.05); padding: 12px 5px; border-radius: 10px; text-align: center; 
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; font-size: 13px;
+        }
+        .tab-btn:active { transform: scale(0.95); }
+        .tab-btn.active { background: var(--primary); color: #000; font-weight: bold; border-color: #fff; }
+
+        .price-display { 
+            background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; text-align: center; 
+            margin-bottom: 15px; border: 1px dashed var(--primary); 
+        }
+        .price-display span { font-size: 28px; font-weight: 800; color: #25D366; }
+
+        .order-button { 
+            width: 100%; background: linear-gradient(45deg, #25D366, #128C7E); color: white; border: none; 
+            padding: 16px; border-radius: 15px; font-size: 17px; font-weight: bold; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .footer-note { font-size: 9px; text-align: center; margin-top: 15px; opacity: 0.6; line-height: 1.4; }
+
+        /* Small Screen Adjustments */
+        @media (max-width: 360px) {
+            .glass-card { padding: 15px; }
+            h2 { font-size: 18px; }
+            .price-display span { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="glass-card">
+    <div class="header">
+        <div class="rocket-logo"><i class="fas fa-rocket"></i></div>
+        <h2>Ali Baba Marketing Pro</h2>
+        <div class="trust-tag">Trusted Since 2022 • 100% Safe</div>
+    </div>
+
+    <div class="section-title">Select Platform</div>
+    <div class="input-wrapper">
+        <i id="platform-icon" class="fas fa-globe"></i>
+        <select id="platformSelect" onchange="handlePlatformChange()">
+            <option value="">-- Choose --</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Facebook">Facebook</option>
+            <option value="TikTok">TikTok</option>
+            <option value="YouTube">YouTube</option>
+        </select>
+    </div>
+
+    <div id="step-service" style="display:none;">
+        <div class="section-title">Select Service</div>
+        <div class="input-wrapper">
+            <i class="fas fa-star"></i>
+            <select id="serviceSelect" onchange="handleServiceChange()"></select>
+        </div>
+    </div>
+
+    <div id="step-quantity" style="display:none;">
+        <div class="section-title">Choose Quantity</div>
+        <div class="tabs-grid" id="quantityTabs"></div>
+    </div>
+
+    <div id="step-final" style="display:none;">
+        <div class="price-display">
+            <small>Estimated Price</small><br>
+            <span id="finalPrice">Rs 0</span>
+        </div>
+        
+        <div class="section-title" id="linkText">Paste Link</div>
+        <div class="input-wrapper">
+            <i class="fas fa-link"></i>
+            <input type="text" id="targetLink" placeholder="Link here...">
+        </div>
+
+        <button class="order-button" onclick="placeOrder()">
+            <i class="fab fa-whatsapp"></i> Order on WhatsApp
+        </button>
+    </div>
+
+    <div class="footer-note">
+        ⚡ Delivery: 1–12 Hours • JazzCash/EasyPaisa <br>
+        100% Safe - No Password Required
+    </div>
+</div>
+
+<script>
+    // Full Inventory with Comments Added
+    const data = {
+        "Instagram": { color: "#251020", theme: "#E1306C", icon: "fa-instagram", services: {
+            "Followers": {"1,000": 560, "3,000": 1650, "5,000": 2700, "10,000": 5500, "20,000": 10500, "50,000": 26000},
+            "Post Likes": {"500": 170, "1,000": 310, "5,000": 1450, "10,000": 2800},
+            "Video Views": {"1,000": 120, "5,000": 550, "10,000": 1050, "50,000": 4800},
+            "Comments": {"50": 350, "100": 650}
+        }},
+        "Facebook": { color: "#0a1530", theme: "#1877F2", icon: "fa-facebook-f", services: {
+            "Page Followers": {"1,000": 400, "3,000": 1150, "5,000": 1900, "10,000": 3800},
+            "Post Likes": {"300": 280, "500": 450, "1,000": 850},
+            "Video Views": {"1,000": 180, "5,000": 850, "10,000": 1600},
+            "Comments": {"50": 350, "100": 650}
+        }},
+        "TikTok": { color: "#101010", theme: "#00f2ea", icon: "fa-tiktok", services: {
+            "Followers": {"1,000": 1100, "3,000": 3200, "5,000": 5300, "10,000": 10500},
+            "Video Likes": {"500": 150, "1,000": 290, "5,000": 1300, "10,000": 2500},
+            "Monetization Views": {"10,000": 2200, "20,000": 3800, "50,000": 8500, "100,000": 14000},
+            "Comments": {"50": 350, "100": 650}
+        }},
+        "YouTube": { color: "#2b0505", theme: "#FF0000", icon: "fa-youtube", services: {
+            "Subscribers": {"500": 4300, "1,000": 8500},
+            "Views": {"1,000": 510, "5,000": 2500, "10,000": 4900},
+            "Likes": {"500": 300, "1,000": 550},
+            "Comments": {"50": 400, "100": 750}
+        }}
+    };
+
+    let currentPkg = { qty: null, price: 0 };
+
+    function handlePlatformChange() {
+        const p = document.getElementById('platformSelect').value;
+        const iconEl = document.getElementById('platform-icon');
+        const serviceSelect = document.getElementById('serviceSelect');
+        const card = document.querySelector('.glass-card');
+
+        if(!p) {
+            document.body.style.background = "#0c1020";
+            document.getElementById('step-service').style.display = 'none';
+            return;
+        }
+
+        document.body.style.background = data[p].color;
+        card.style.borderColor = data[p].theme;
+        iconEl.className = `fab ${data[p].icon}`;
+        iconEl.style.color = data[p].theme;
+
+        serviceSelect.innerHTML = '<option value="">-- Select Service --</option>';
+        Object.keys(data[p].services).forEach(s => {
+            serviceSelect.innerHTML += `<option value="${s}">${s}</option>`;
+        });
+
+        document.getElementById('step-service').style.display = 'block';
+        document.getElementById('step-quantity').style.display = 'none';
+        document.getElementById('step-final').style.display = 'none';
+    }
+
+    function handleServiceChange() {
+        const p = document.getElementById('platformSelect').value;
+        const s = document.getElementById('serviceSelect').value;
+        const tabsGrid = document.getElementById('quantityTabs');
+        const linkLabel = document.getElementById('linkText');
+
+        if(!s) {
+            document.getElementById('step-quantity').style.display = 'none';
+            return;
+        }
+
+        linkLabel.innerText = (s.includes('Follower') || s.includes('Subscriber')) ? "Account Link" : "Post/Video URL";
+
+        tabsGrid.innerHTML = '';
+        Object.entries(data[p].services[s]).forEach(([qty, price]) => {
+            const btn = document.createElement('div');
+            btn.className = 'tab-btn';
+            btn.innerText = qty;
+            btn.onclick = () => selectQuantity(btn, qty, price);
+            tabsGrid.appendChild(btn);
+        });
+
+        document.getElementById('step-quantity').style.display = 'block';
+        document.getElementById('step-final').style.display = 'none';
+    }
+
+    function selectQuantity(el, qty, price) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        currentPkg = { qty, price };
+        document.getElementById('finalPrice').innerText = "Rs " + price.toLocaleString();
+        document.getElementById('step-final').style.display = 'block';
+    }
+
+    function placeOrder() {
+        const p = document.getElementById('platformSelect').value;
+        const s = document.getElementById('serviceSelect').value;
+        const link = document.getElementById('targetLink').value;
+
+        if(!link) { alert("Please enter link!"); return; }
+
+        const message = `*NEW ORDER - Ali Baba Marketing Pro*%0A` +
+                        `--------------------------%0A` +
+                        `*Platform:* ${p}%0A` +
+                        `*Service:* ${s}%0A` +
+                        `*Quantity:* ${currentPkg.qty}%0A` +
+                        `*Total Price:* Rs ${currentPkg.price.toLocaleString()}%0A` +
+                        `--------------------------%0A` +
+                        `*Link:* ${link}%0A` +
+                        `--------------------------%0A` +
+                        `_Brother, payment details share kar dein._`;
+
+        window.open(`https://wa.me/923164324778?text=${message}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
