@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ur">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1MSFL8F8HX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1MSFL8F8HX');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ali Baba Marketing Pro | Premium Panel</title>
@@ -244,14 +252,20 @@
     }
 
     function placeOrder() {
-        const p = document.getElementById('platformSelect').value;
-        const s = document.getElementById('serviceSelect').value;
-        const link = document.getElementById('targetLink').value;
-        if (!link) { alert("Please enter link!"); return; }
+    const p = document.getElementById('platformSelect').value;
+    const s = document.getElementById('serviceSelect').value;
+    const link = document.getElementById('targetLink').value;
+    if (!link) { alert("Please enter link!"); return; }
 
-        const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
-        window.open(`https://wa.me/923494224533?text=${msg}`, '_blank');
-    }
+    // Is se aapko Analytics mein pata chale ga kitne logon ne click kia
+    gtag('event', 'whatsapp_order_click', {
+        'platform_name': p,
+        'service_type': s
+    });
+
+    const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
+    window.open(`https://wa.me/923494224533?text=${msg}`, '_blank');
+}
 
     init();
 </script>
