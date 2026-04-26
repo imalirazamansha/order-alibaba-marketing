@@ -15,41 +15,59 @@
         
         body { 
             margin: 0; padding: 0; background: var(--body-bg); 
-            font-family: 'Segoe UI', sans-serif; color: var(--text-color); 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            color: var(--text-color); 
             display: flex; justify-content: center; min-height: 100vh;
-            transition: all 0.5s ease;
+            transition: background 0.5s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .glass-card { 
-            background: var(--glass-bg); backdrop-filter: blur(20px); border: 2px solid rgba(255,255,255,0.1); 
-            border-radius: 25px; padding: 20px; width: 92%; max-width: 420px; margin: 20px auto; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5); box-sizing: border-box;
+            background: var(--glass-bg); backdrop-filter: blur(20px); 
+            border: 2px solid rgba(255,255,255,0.1); 
+            border-radius: 25px; padding: 20px; 
+            width: 92%; max-width: 420px; 
+            margin: 20px auto; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+            transition: border-color 0.5s ease;
+            box-sizing: border-box;
         }
 
         .header { text-align: center; margin-bottom: 20px; }
-        .rocket-icon { font-size: 50px; color: var(--primary); margin-bottom: 10px; filter: drop-shadow(0 0 10px var(--primary)); }
-        h2 { margin: 0; font-size: 22px; font-weight: 800; color: #fff; }
-        .trust-tag { font-size: 10px; opacity: 0.8; color: var(--primary); font-weight: bold; margin-top: 5px; }
-
-        .section-title { font-size: 13px; margin: 15px 0 10px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--primary); }
+        .rocket-logo {
+            font-size: 45px; color: var(--primary); margin-bottom: 8px;
+            filter: drop-shadow(0 0 8px var(--primary));
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         
+        h2 { margin: 0; font-size: 22px; font-weight: 800; }
+        .trust-tag { font-size: 10px; opacity: 0.8; color: var(--primary); font-weight: bold; text-transform: uppercase; }
+
+        .section-title { font-size: 13px; margin: 15px 0 10px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        
+        .input-wrapper { position: relative; width: 100%; }
+        .input-wrapper i { position: absolute; left: 15px; top: 14px; color: var(--primary); font-size: 16px; z-index: 2; }
+
         select, input { 
-            width: 100%; padding: 14px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
+            width: 100%; padding: 14px 15px 14px 42px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
             background: #161b33; color: #fff; font-size: 15px; margin-bottom: 12px; outline: none; box-sizing: border-box;
+            appearance: none;
         }
 
         .tabs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px; }
         .tab-btn { 
             background: rgba(255,255,255,0.05); padding: 12px 5px; border-radius: 10px; text-align: center; 
-            cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; font-size: 14px; color: #fff;
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; font-size: 13px; color: #fff;
         }
+        .tab-btn:active { transform: scale(0.95); }
         .tab-btn.active { background: var(--primary); color: #000; font-weight: bold; border-color: #fff; }
 
         .price-display { 
             background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; text-align: center; 
             margin-bottom: 15px; border: 1px dashed var(--primary); 
         }
-        .price-display span { font-size: 32px; font-weight: 800; color: #25D366; }
+        .price-display span { font-size: 28px; font-weight: 800; color: #25D366; }
 
         .order-button { 
             width: 100%; background: linear-gradient(45deg, #25D366, #128C7E); color: white; border: none; 
@@ -61,46 +79,61 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--body-bg);
             display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999;
         }
+
+        @media (max-width: 360px) {
+            .glass-card { padding: 15px; }
+            h2 { font-size: 18px; }
+            .price-display span { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
 
 <div id="loading-overlay">
     <i class="fas fa-rocket fa-spin" style="font-size: 40px; color: var(--primary);"></i>
-    <p style="margin-top:15px;">Updating Rates from Sheet...</p>
+    <p style="margin-top:15px; color: #fff;">Syncing Rates...</p>
 </div>
 
 <div class="glass-card">
     <div class="header">
-        <div class="rocket-icon" id="mainIcon"><i class="fas fa-rocket"></i></div>
+        <div class="rocket-logo" id="mainIcon"><i class="fas fa-rocket"></i></div>
         <h2>Ali Baba Marketing Pro</h2>
-        <div class="trust-tag">Trusted Since 2022 | 100% Safe & Fast</div>
+        <div class="trust-tag">Trusted Since 2022 • 100% Safe</div>
     </div>
 
-    <div class="section-title">Step 1: Choose Platform</div>
-    <select id="platformSelect" onchange="updateServices()">
-        <option value="">-- Select --</option>
-    </select>
+    <div class="section-title">Select Platform</div>
+    <div class="input-wrapper">
+        <i id="platform-icon" class="fas fa-globe"></i>
+        <select id="platformSelect" onchange="handlePlatformChange()">
+            <option value="">-- Choose --</option>
+        </select>
+    </div>
 
     <div id="step-service" style="display:none;">
-        <div class="section-title">Step 2: Select Service</div>
-        <select id="serviceSelect" onchange="updateQuantities()"></select>
+        <div class="section-title">Select Service</div>
+        <div class="input-wrapper">
+            <i class="fas fa-star"></i>
+            <select id="serviceSelect" onchange="handleServiceChange()"></select>
+        </div>
     </div>
 
     <div id="step-quantity" style="display:none;">
-        <div class="section-title">Step 3: Select Quantity</div>
+        <div class="section-title">Choose Quantity</div>
         <div class="tabs-grid" id="quantityTabs"></div>
     </div>
 
     <div id="step-final" style="display:none;">
         <div class="price-display">
-            <small>Total Price</small><br>
+            <small>Estimated Price</small><br>
             <span id="finalPrice">Rs 0</span>
         </div>
-        <div class="section-title">Account/Profile Link</div>
-        <input type="text" id="targetLink" placeholder="https://instagram.com/yourname">
+        <div class="section-title" id="linkText">Paste Link</div>
+        <div class="input-wrapper">
+            <i class="fas fa-link"></i>
+            <input type="text" id="targetLink" placeholder="Link here...">
+        </div>
         <button class="order-button" onclick="placeOrder()">
-            <i class="fab fa-whatsapp"></i> Confirm via WhatsApp
+            <i class="fab fa-whatsapp"></i> Order on WhatsApp
         </button>
     </div>
 </div>
@@ -110,56 +143,52 @@
     let inventory = {};
     let currentPkg = { qty: null, price: 0 };
 
-    const colors = {
-        'Instagram': '#E1306C',
-        'Facebook': '#1877F2',
-        'TikTok': '#00f2ea',
-        'YouTube': '#FF0000',
-        'Default': '#00d2ff'
+    const config = {
+        'Instagram': { color: "#251020", theme: "#E1306C", icon: "fa-instagram" },
+        'Facebook': { color: "#0a1530", theme: "#1877F2", icon: "fa-facebook-f" },
+        'TikTok': { color: "#101010", theme: "#00f2ea", icon: "fa-tiktok" },
+        'YouTube': { color: "#2b0505", theme: "#FF0000", icon: "fa-youtube" },
+        'Default': { color: "#0c1020", theme: "#00d2ff", icon: "fa-globe" }
     };
 
     async function init() {
         try {
             const response = await fetch(sheetURL);
-            const data = await response.text();
-            const rows = data.split('\n').slice(1);
+            const csv = await response.text();
+            const rows = csv.split('\n').slice(1);
             
             rows.forEach(row => {
-                // CSV clean regex for quotes and commas inside quotes
                 const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
                 if (!cols || cols.length < 4) return;
                 
-                const platform = cols[0].replace(/"/g, '').trim();
-                const service = cols[1].replace(/"/g, '').trim();
-                const qty = cols[2].replace(/"/g, '').trim();
-                const price = cols[3].replace(/"/g, '').trim();
+                const p = cols[0].replace(/"/g, '').trim();
+                const s = cols[1].replace(/"/g, '').trim();
+                const q = cols[2].replace(/"/g, '').trim();
+                const pr = cols[3].replace(/"/g, '').trim();
 
-                if (!inventory[platform]) inventory[platform] = {};
-                if (!inventory[platform][service]) inventory[platform][service] = {};
-                inventory[platform][service][qty] = price;
+                if (!inventory[p]) inventory[p] = {};
+                if (!inventory[p][s]) inventory[p][s] = {};
+                inventory[p][s][q] = pr;
             });
 
-            const platformSelect = document.getElementById('platformSelect');
+            const pSelect = document.getElementById('platformSelect');
             Object.keys(inventory).forEach(p => {
-                if(p) platformSelect.innerHTML += `<option value="${p}">${p}</option>`;
+                if(p) pSelect.innerHTML += `<option value="${p}">${p}</option>`;
             });
-
             document.getElementById('loading-overlay').style.display = 'none';
-        } catch (error) {
-            console.error(error);
-            alert("Error: Sheet data not found. Please check Publish settings.");
-        }
+        } catch (e) { alert("Sheet sync failed. Check internet."); }
     }
 
-    function updateServices() {
+    function handlePlatformChange() {
         const p = document.getElementById('platformSelect').value;
         const sSelect = document.getElementById('serviceSelect');
-        const themeColor = colors[p] || colors['Default'];
+        const c = config[p] || config['Default'];
         
-        // Dynamic Styling
-        document.documentElement.style.setProperty('--primary', themeColor);
-        document.getElementById('mainIcon').style.color = themeColor;
-        document.getElementById('mainIcon').style.filter = `drop-shadow(0 0 10px ${themeColor})`;
+        document.body.style.background = c.color;
+        document.documentElement.style.setProperty('--primary', c.theme);
+        document.getElementById('platform-icon').className = `fab ${c.icon}`;
+        document.getElementById('platform-icon').style.color = c.theme;
+        document.querySelector('.glass-card').style.borderColor = c.theme;
 
         if (!p) return;
         sSelect.innerHTML = '<option value="">-- Select Service --</option>';
@@ -171,13 +200,13 @@
         document.getElementById('step-final').style.display = 'none';
     }
 
-    function updateQuantities() {
+    function handleServiceChange() {
         const p = document.getElementById('platformSelect').value;
         const s = document.getElementById('serviceSelect').value;
-        const qTabs = document.getElementById('quantityTabs');
+        const qGrid = document.getElementById('quantityTabs');
         if (!s) return;
 
-        qTabs.innerHTML = '';
+        qGrid.innerHTML = '';
         Object.entries(inventory[p][s]).forEach(([qty, price]) => {
             const btn = document.createElement('div');
             btn.className = 'tab-btn';
@@ -189,7 +218,7 @@
                 document.getElementById('finalPrice').innerText = "Rs " + price;
                 document.getElementById('step-final').style.display = 'block';
             };
-            qTabs.appendChild(btn);
+            qGrid.appendChild(btn);
         });
         document.getElementById('step-quantity').style.display = 'block';
     }
@@ -198,7 +227,7 @@
         const p = document.getElementById('platformSelect').value;
         const s = document.getElementById('serviceSelect').value;
         const link = document.getElementById('targetLink').value;
-        if (!link) { alert("Please paste link!"); return; }
+        if (!link) { alert("Please enter link!"); return; }
 
         const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
         window.open(`https://wa.me/923164324778?text=${msg}`, '_blank');
