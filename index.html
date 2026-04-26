@@ -17,6 +17,7 @@
             margin: 0; padding: 0; background: var(--body-bg); 
             font-family: 'Segoe UI', sans-serif; color: var(--text-color); 
             display: flex; justify-content: center; min-height: 100vh;
+            transition: all 0.5s ease;
         }
 
         .glass-card { 
@@ -27,7 +28,6 @@
 
         .header { text-align: center; margin-bottom: 20px; }
         .rocket-icon { font-size: 50px; color: var(--primary); margin-bottom: 10px; filter: drop-shadow(0 0 10px var(--primary)); }
-        
         h2 { margin: 0; font-size: 22px; font-weight: 800; color: #fff; }
         .trust-tag { font-size: 10px; opacity: 0.8; color: var(--primary); font-weight: bold; margin-top: 5px; }
 
@@ -67,19 +67,19 @@
 
 <div id="loading-overlay">
     <i class="fas fa-rocket fa-spin" style="font-size: 40px; color: var(--primary);"></i>
-    <p style="margin-top:15px;">Updating Rates...</p>
+    <p style="margin-top:15px;">Updating Rates from Sheet...</p>
 </div>
 
 <div class="glass-card">
     <div class="header">
-        <div class="rocket-icon"><i class="fas fa-rocket"></i></div>
+        <div class="rocket-icon" id="mainIcon"><i class="fas fa-rocket"></i></div>
         <h2>Ali Baba Marketing Pro</h2>
-        <div class="trust-tag">Trusted Since 2022 • 100% Safe</div>
+        <div class="trust-tag">Trusted Since 2022 • 100% Safe & Fast</div>
     </div>
 
-    <div class="section-title">Step 1: Select Platform</div>
+    <div class="section-title">Step 1: Choose Platform</div>
     <select id="platformSelect" onchange="updateServices()">
-        <option value="">-- Choose --</option>
+        <option value="">-- Select --</option>
     </select>
 
     <div id="step-service" style="display:none;">
@@ -88,17 +88,17 @@
     </div>
 
     <div id="step-quantity" style="display:none;">
-        <div class="section-title">Step 3: Choose Quantity</div>
+        <div class="section-title">Step 3: Select Quantity</div>
         <div class="tabs-grid" id="quantityTabs"></div>
     </div>
 
     <div id="step-final" style="display:none;">
         <div class="price-display">
-            <small>Estimated Price</small><br>
+            <small>Total Price</small><br>
             <span id="finalPrice">Rs 0</span>
         </div>
-        <div class="section-title" id="linkText">Account/Video Link</div>
-        <input type="text" id="targetLink" placeholder="Paste link here...">
+        <div class="section-title">Account/Profile Link</div>
+        <input type="text" id="targetLink" placeholder="https://instagram.com/yourname">
         <button class="order-button" onclick="placeOrder()">
             <i class="fab fa-whatsapp"></i> Confirm via WhatsApp
         </button>
@@ -110,6 +110,14 @@
     let inventory = {};
     let currentPkg = { qty: null, price: 0 };
 
+    const colors = {
+        'Instagram': '#E1306C',
+        'Facebook': '#1877F2',
+        'TikTok': '#00f2ea',
+        'YouTube': '#FF0000',
+        'Default': '#00d2ff'
+    };
+
     async function init() {
         try {
             const response = await fetch(sheetURL);
@@ -117,11 +125,14 @@
             const rows = data.split('\n').slice(1);
             
             rows.forEach(row => {
-                // Cleaning the data from quotes and extra spaces
-                const cols = row.split(',').map(c => c.replace(/"/g, '').trim());
-                if (cols.length < 4) return;
+                // CSV clean regex for quotes and commas inside quotes
+                const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+                if (!cols || cols.length < 4) return;
                 
-                const [platform, service, qty, price] = cols;
+                const platform = cols[0].replace(/"/g, '').trim();
+                const service = cols[1].replace(/"/g, '').trim();
+                const qty = cols[2].replace(/"/g, '').trim();
+                const price = cols[3].replace(/"/g, '').trim();
 
                 if (!inventory[platform]) inventory[platform] = {};
                 if (!inventory[platform][service]) inventory[platform][service] = {};
@@ -136,15 +147,21 @@
             document.getElementById('loading-overlay').style.display = 'none';
         } catch (error) {
             console.error(error);
-            alert("Connection error. Please refresh page.");
+            alert("Error: Sheet data not found. Please check Publish settings.");
         }
     }
 
     function updateServices() {
         const p = document.getElementById('platformSelect').value;
         const sSelect = document.getElementById('serviceSelect');
-        if (!p) return;
+        const themeColor = colors[p] || colors['Default'];
+        
+        // Dynamic Styling
+        document.documentElement.style.setProperty('--primary', themeColor);
+        document.getElementById('mainIcon').style.color = themeColor;
+        document.getElementById('mainIcon').style.filter = `drop-shadow(0 0 10px ${themeColor})`;
 
+        if (!p) return;
         sSelect.innerHTML = '<option value="">-- Select Service --</option>';
         Object.keys(inventory[p]).forEach(s => {
             sSelect.innerHTML += `<option value="${s}">${s}</option>`;
