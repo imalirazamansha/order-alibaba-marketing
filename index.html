@@ -55,17 +55,7 @@
             appearance: none;
         }
 
-        /* Improved Grid for more buttons */
-        .tabs-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 10px; 
-            margin-bottom: 15px;
-            max-height: 250px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        
+        .tabs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px; }
         .tab-btn { 
             background: rgba(255,255,255,0.05); padding: 12px 5px; border-radius: 10px; text-align: center; 
             cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; font-size: 13px; color: #fff;
@@ -90,16 +80,18 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999;
         }
 
-        /* Custom Scrollbar for many buttons */
-        .tabs-grid::-webkit-scrollbar { width: 4px; }
-        .tabs-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        @media (max-width: 360px) {
+            .glass-card { padding: 15px; }
+            h2 { font-size: 18px; }
+            .price-display span { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
 
 <div id="loading-overlay">
     <i class="fas fa-rocket fa-spin" style="font-size: 40px; color: var(--primary);"></i>
-    <p style="margin-top:15px; color: #fff;">Fetching Latest Rates...</p>
+    <p style="margin-top:15px; color: #fff;">Syncing Rates...</p>
 </div>
 
 <div class="glass-card">
@@ -132,7 +124,7 @@
 
     <div id="step-final" style="display:none;">
         <div class="price-display">
-            <small>Total Price</small><br>
+            <small>Estimated Price</small><br>
             <span id="finalPrice">Rs 0</span>
         </div>
         <div class="section-title" id="linkText">Paste Link</div>
@@ -184,7 +176,7 @@
                 if(p) pSelect.innerHTML += `<option value="${p}">${p}</option>`;
             });
             document.getElementById('loading-overlay').style.display = 'none';
-        } catch (e) { console.error(e); }
+        } catch (e) { alert("Sheet sync failed. Check internet."); }
     }
 
     function handlePlatformChange() {
@@ -215,7 +207,6 @@
         if (!s) return;
 
         qGrid.innerHTML = '';
-        // Ab yahan jitni bhi quantities sheet mein hon gi, sab show hon gi
         Object.entries(inventory[p][s]).forEach(([qty, price]) => {
             const btn = document.createElement('div');
             btn.className = 'tab-btn';
@@ -239,7 +230,7 @@
         if (!link) { alert("Please enter link!"); return; }
 
         const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
-        window.open(`https://wa.me/923134253134?text=${msg}`, '_blank');
+        window.open(`https://wa.me/923164324778?text=${msg}`, '_blank');
     }
 
     init();
