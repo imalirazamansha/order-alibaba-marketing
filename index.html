@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ur">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1MSFL8F8HX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1MSFL8F8HX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-1MSFL8F8HX');
+    </script>
 
-  gtag('config', 'G-1MSFL8F8HX');
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ali Baba Marketing Pro | Premium Panel</title>
@@ -224,7 +223,6 @@
 
         if (!s) return;
 
-        // Change label based on service type
         if (s.toLowerCase().includes('followers') || s.toLowerCase().includes('subscribers')) {
             linkLabel.innerHTML = 'Paste Your Account Link <br><small style="color:var(--primary)">(Account Must Be Public)</small>';
         } else if (s.toLowerCase().includes('likes')) {
@@ -252,21 +250,20 @@
         document.getElementById('step-quantity').style.display = 'block';
     }
 
-    **Ab file ke aakhir mein jo `placeOrder` function hai, usay is se replace karein:**
-
-```javascript
     function placeOrder() {
         const p = document.getElementById('platformSelect').value;
         const s = document.getElementById('serviceSelect').value;
         const link = document.getElementById('targetLink').value;
         if (!link) { alert("Please enter link!"); return; }
 
-        // WhatsApp Click Tracking Code - Is se data Analytics mein jaye ga
-        gtag('event', 'whatsapp_order_click', {
-            'platform_name': p,
-            'service_type': s,
-            'quantity': currentPkg.qty
-        });
+        // WhatsApp Click Tracking
+        if(typeof gtag === 'function') {
+            gtag('event', 'whatsapp_order_click', {
+                'platform': p,
+                'service': s,
+                'quantity': currentPkg.qty
+            });
+        }
 
         const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
         window.open(`https://wa.me/923494224533?text=${msg}`, '_blank');
