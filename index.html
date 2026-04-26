@@ -1,274 +1,36 @@
 <!DOCTYPE html>
 <html lang="ur">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1MSFL8F8HX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1MSFL8F8HX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-1MSFL8F8HX');
-</script>
+      gtag('config', 'G-1MSFL8F8HX');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ali Baba Marketing Pro | Premium Panel</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { 
-            --body-bg: #0c1020;
-            --glass-bg: rgba(18, 23, 45, 0.95);
-            --primary: #00d2ff;
-            --text-color: #ffffff;
-        }
-        
-        body { 
-            margin: 0; padding: 0; background: var(--body-bg); 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            color: var(--text-color); 
-            display: flex; justify-content: center; min-height: 100vh;
-            transition: background 0.5s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
+    ```
 
-        .glass-card { 
-            background: var(--glass-bg); backdrop-filter: blur(20px); 
-            border: 2px solid rgba(255,255,255,0.1); 
-            border-radius: 25px; padding: 20px; 
-            width: 92%; max-width: 420px; 
-            margin: 20px auto; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
-            transition: border-color 0.5s ease;
-            box-sizing: border-box;
-        }
+**Ab file ke aakhir mein jo `placeOrder` function hai, usay is se replace karein:**
 
-        .header { text-align: center; margin-bottom: 20px; }
-        .rocket-logo {
-            font-size: 45px; color: var(--primary); margin-bottom: 8px;
-            filter: drop-shadow(0 0 8px var(--primary));
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        
-        h2 { margin: 0; font-size: 22px; font-weight: 800; }
-        .trust-tag { font-size: 10px; opacity: 0.8; color: var(--primary); font-weight: bold; text-transform: uppercase; }
-
-        .section-title { font-size: 13px; margin: 15px 0 10px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        
-        .input-wrapper { position: relative; width: 100%; }
-        .input-wrapper i { position: absolute; left: 15px; top: 14px; color: var(--primary); font-size: 16px; z-index: 2; }
-
-        select, input { 
-            width: 100%; padding: 14px 15px 14px 42px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
-            background: #161b33; color: #fff; font-size: 15px; margin-bottom: 12px; outline: none; box-sizing: border-box;
-            appearance: none;
-        }
-
-        .tabs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px; }
-        .tab-btn { 
-            background: rgba(255,255,255,0.05); padding: 12px 5px; border-radius: 10px; text-align: center; 
-            cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; font-size: 13px; color: #fff;
-        }
-        .tab-btn:active { transform: scale(0.95); }
-        .tab-btn.active { background: var(--primary); color: #000; font-weight: bold; border-color: #fff; }
-
-        .price-display { 
-            background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; text-align: center; 
-            margin-bottom: 15px; border: 1px dashed var(--primary); 
-        }
-        .price-display span { font-size: 28px; font-weight: 800; color: #25D366; }
-
-        .info-box {
-            background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px; margin-bottom: 15px;
-            font-size: 11px; line-height: 1.6; border-left: 3px solid var(--primary);
-        }
-
-        .order-button { 
-            width: 100%; background: linear-gradient(45deg, #25D366, #128C7E); color: white; border: none; 
-            padding: 16px; border-radius: 15px; font-size: 17px; font-weight: bold; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-
-        #loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--body-bg);
-            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999;
-        }
-    </style>
-</head>
-<body>
-
-<div id="loading-overlay">
-    <i class="fas fa-rocket fa-spin" style="font-size: 40px; color: var(--primary);"></i>
-    <p style="margin-top:15px; color: #fff;">Syncing Rates...</p>
-</div>
-
-<div class="glass-card">
-    <div class="header">
-        <div class="rocket-logo" id="mainIcon"><i class="fas fa-rocket"></i></div>
-        <h2>Ali Baba Marketing Pro</h2>
-        <div class="trust-tag">Trusted Since 2022 • 100% Safe</div>
-    </div>
-
-    <div class="section-title">Select Platform</div>
-    <div class="input-wrapper">
-        <i id="platform-icon" class="fas fa-globe"></i>
-        <select id="platformSelect" onchange="handlePlatformChange()">
-            <option value="">-- Choose --</option>
-        </select>
-    </div>
-
-    <div id="step-service" style="display:none;">
-        <div class="section-title">Select Service</div>
-        <div class="input-wrapper">
-            <i class="fas fa-star"></i>
-            <select id="serviceSelect" onchange="handleServiceChange()"></select>
-        </div>
-    </div>
-
-    <div id="step-quantity" style="display:none;">
-        <div class="section-title">Choose Quantity</div>
-        <div class="tabs-grid" id="quantityTabs"></div>
-    </div>
-
-    <div id="step-final" style="display:none;">
-        <div class="price-display">
-            <small>Estimated Price</small><br>
-            <span id="finalPrice">Rs 0</span>
-        </div>
-        
-        <div class="section-title" id="linkText">Paste Link</div>
-        <div class="input-wrapper">
-            <i class="fas fa-link"></i>
-            <input type="text" id="targetLink" placeholder="Link here...">
-        </div>
-
-        <div class="info-box">
-            <b>Payment Methods:</b> EasyPaisa, JazzCash, NayaPay, SadaPay & Bank Transfer <br>
-            <b>Refill:</b> Lifetime Refill Guarantee <br>
-            <b>Time:</b> Order Completion Time 1 to 12 Hours or Before
-        </div>
-
-        <button class="order-button" onclick="placeOrder()">
-            <i class="fab fa-whatsapp"></i> Order on WhatsApp
-        </button>
-    </div>
-</div>
-
-<script>
-    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT3TljDuPoT49zJ6kgb7RzMLnT3FQojTklgx5cpjagXKGssiqP_X-ndazWnYSNddUOrgODWLiTTCEL7/pub?output=csv";
-    let inventory = {};
-    let currentPkg = { qty: null, price: 0 };
-
-    const config = {
-        'Instagram': { color: "#251020", theme: "#E1306C", icon: "fa-instagram" },
-        'Facebook': { color: "#0a1530", theme: "#1877F2", icon: "fa-facebook-f" },
-        'TikTok': { color: "#101010", theme: "#00f2ea", icon: "fa-tiktok" },
-        'YouTube': { color: "#2b0505", theme: "#FF0000", icon: "fa-youtube" },
-        'Default': { color: "#0c1020", theme: "#00d2ff", icon: "fa-globe" }
-    };
-
-    async function init() {
-        try {
-            const response = await fetch(sheetURL);
-            const csv = await response.text();
-            const rows = csv.split('\n').slice(1);
-            
-            rows.forEach(row => {
-                const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-                if (!cols || cols.length < 4) return;
-                
-                const p = cols[0].replace(/"/g, '').trim();
-                const s = cols[1].replace(/"/g, '').trim();
-                const q = cols[2].replace(/"/g, '').trim();
-                const pr = cols[3].replace(/"/g, '').trim();
-
-                if (!inventory[p]) inventory[p] = {};
-                if (!inventory[p][s]) inventory[p][s] = {};
-                inventory[p][s][q] = pr;
-            });
-
-            const pSelect = document.getElementById('platformSelect');
-            Object.keys(inventory).forEach(p => {
-                if(p) pSelect.innerHTML += `<option value="${p}">${p}</option>`;
-            });
-            document.getElementById('loading-overlay').style.display = 'none';
-        } catch (e) { console.log("Sync Error"); }
-    }
-
-    function handlePlatformChange() {
-        const p = document.getElementById('platformSelect').value;
-        const sSelect = document.getElementById('serviceSelect');
-        const c = config[p] || config['Default'];
-        
-        document.body.style.background = c.color;
-        document.documentElement.style.setProperty('--primary', c.theme);
-        document.getElementById('platform-icon').className = `fab ${c.icon}`;
-        document.getElementById('platform-icon').style.color = c.theme;
-        document.querySelector('.glass-card').style.borderColor = c.theme;
-
-        if (!p) return;
-        sSelect.innerHTML = '<option value="">-- Select Service --</option>';
-        Object.keys(inventory[p]).forEach(s => {
-            sSelect.innerHTML += `<option value="${s}">${s}</option>`;
-        });
-        document.getElementById('step-service').style.display = 'block';
-        document.getElementById('step-quantity').style.display = 'none';
-        document.getElementById('step-final').style.display = 'none';
-    }
-
-    function handleServiceChange() {
+```javascript
+    function placeOrder() {
         const p = document.getElementById('platformSelect').value;
         const s = document.getElementById('serviceSelect').value;
-        const qGrid = document.getElementById('quantityTabs');
-        const linkLabel = document.getElementById('linkText');
+        const link = document.getElementById('targetLink').value;
+        if (!link) { alert("Please enter link!"); return; }
 
-        if (!s) return;
-
-        // Change label based on service type
-        if (s.toLowerCase().includes('followers') || s.toLowerCase().includes('subscribers')) {
-            linkLabel.innerHTML = 'Paste Your Account Link <br><small style="color:var(--primary)">(Account Must Be Public)</small>';
-        } else if (s.toLowerCase().includes('likes')) {
-            linkLabel.innerHTML = 'Paste Post/Video Link <br><small style="color:var(--primary)">(Link Must Be Public)</small>';
-        } else if (s.toLowerCase().includes('views')) {
-            linkLabel.innerHTML = 'Paste Your Video Link <br><small style="color:var(--primary)">(Link Must Be Public)</small>';
-        } else {
-            linkLabel.innerHTML = 'Paste Link <br><small style="color:var(--primary)">(Link Must Be Public)</small>';
-        }
-
-        qGrid.innerHTML = '';
-        Object.entries(inventory[p][s]).forEach(([qty, price]) => {
-            const btn = document.createElement('div');
-            btn.className = 'tab-btn';
-            btn.innerText = qty;
-            btn.onclick = () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentPkg = { qty, price };
-                document.getElementById('finalPrice').innerText = "Rs " + price;
-                document.getElementById('step-final').style.display = 'block';
-            };
-            qGrid.appendChild(btn);
+        // WhatsApp Click Tracking Code - Is se data Analytics mein jaye ga
+        gtag('event', 'whatsapp_order_click', {
+            'platform_name': p,
+            'service_type': s,
+            'quantity': currentPkg.qty
         });
-        document.getElementById('step-quantity').style.display = 'block';
+
+        const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
+        window.open(`https://wa.me/923494224533?text=${msg}`, '_blank');
     }
-
-    function placeOrder() {
-    const p = document.getElementById('platformSelect').value;
-    const s = document.getElementById('serviceSelect').value;
-    const link = document.getElementById('targetLink').value;
-    if (!link) { alert("Please enter link!"); return; }
-
-    // Is se aapko Analytics mein pata chale ga kitne logon ne click kia
-    gtag('event', 'whatsapp_order_click', {
-        'platform_name': p,
-        'service_type': s
-    });
-
-    const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
-    window.open(`https://wa.me/923494224533?text=${msg}`, '_blank');
-}
-
-    init();
-</script>
-</body>
-</html>
