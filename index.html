@@ -252,21 +252,25 @@
         document.getElementById('step-quantity').style.display = 'block';
     }
 
+    **Ab file ke aakhir mein jo `placeOrder` function hai, usay is se replace karein:**
+
+```javascript
     function placeOrder() {
-    const p = document.getElementById('platformSelect').value;
-    const s = document.getElementById('serviceSelect').value;
-    const link = document.getElementById('targetLink').value;
-    if (!link) { alert("Please enter link!"); return; }
+        const p = document.getElementById('platformSelect').value;
+        const s = document.getElementById('serviceSelect').value;
+        const link = document.getElementById('targetLink').value;
+        if (!link) { alert("Please enter link!"); return; }
 
-    // Is se aapko Analytics mein pata chale ga kitne logon ne click kia
-    gtag('event', 'whatsapp_order_click', {
-        'platform_name': p,
-        'service_type': s
-    });
+        // WhatsApp Click Tracking Code - Is se data Analytics mein jaye ga
+        gtag('event', 'whatsapp_order_click', {
+            'platform_name': p,
+            'service_type': s,
+            'quantity': currentPkg.qty
+        });
 
-    const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
-    window.open(`https://wa.me/923494224533?text=${msg}`, '_blank');
-}
+        const msg = `*NEW ORDER - Ali Baba Marketing Pro*%0A*Platform:* ${p}%0A*Service:* ${s}%0A*Quantity:* ${currentPkg.qty}%0A*Price:* Rs ${currentPkg.price}%0A*Link:* ${link}`;
+        window.open(`https://wa.me/923494224533?text=${msg}`, '_blank');
+    }
 
     init();
 </script>
